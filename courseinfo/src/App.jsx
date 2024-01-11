@@ -1,5 +1,18 @@
-import CoursesList from './components/CoursesList'
-import Header from './components/Header'
+import Course from './components/Course'
+
+const Header = ({text}) => {
+  return <h1>{text}</h1>
+}
+
+const CoursesList = ({courses}) => {
+  return (
+    <>
+      {courses.map(course => {
+        return <Course key={course.id} course={course} />
+      })}
+    </>
+  )
+}
 
 const App = () => {
   const courses = [
@@ -49,7 +62,7 @@ const App = () => {
 
   return (
     <>
-      <Header text="Web development curriculum" size="1" />
+      <Header text="Web development curriculum" />
       <CoursesList courses={courses} />
     </>
   )
