@@ -1,27 +1,4 @@
-const Header = ({text}) => <h1>{text}</h1>
-
-const Part = ({part}) => {
-  return <p>{part.name} a {part.exercises}</p>
-}
-
-const Content = ({parts}) => {
-  return (
-    <div>
-      {parts.map(part =>
-        <Part key={part.id} part={part} />
-      )}
-    </div>
-  ) 
-}
-
-const Course = ({course}) => {
-  return (
-    <>
-      <Header text={course.name} />
-      <Content parts={course.parts} />
-    </>
-  )
-}
+import Course from './components/Course'
 
 const App = () => {
   const course = {
@@ -46,7 +23,7 @@ const App = () => {
     ]
   }
 
-  return <Course course={course} />
+  //return <Course course={course} />
 }
 
 export default App
