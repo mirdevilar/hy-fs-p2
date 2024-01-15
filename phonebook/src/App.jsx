@@ -1,60 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const Filter = ({handleChange, filter}) => {
-  return (
-    <div>
-      filter names:
-      <input 
-        onChange={handleChange}
-        value={filter}
-      />
-    </div>
-  )
-} 
-
-const PersonsList = ({persons, filter}) => {
-  const list = persons
-    .filter(person => {
-      return (
-        !filter ||
-        person.name.toLowerCase()
-          .includes(filter.toLowerCase())
-      )
-    })
-    .map((person, i) =>
-    <li key={i} className='person' >{person.name}: {person.number}</li>
-    )
-  return (
-    <ul>{list}</ul>
-  )
-}
-
-const AddPerson = ({newName, newNumber,
-handleNameUpdate, handleNumberUpdate, handleSubmitPerson}) => {
-  
-
-
-  return (
-    <form>
-      <div>
-        name: 
-        <input 
-          onChange={handleNameUpdate}
-          value={newName}
-        />
-        <br />
-        number:
-        <input
-          onChange={handleNumberUpdate}
-          value={newNumber}
-        />
-      </div>
-      <div>
-        <button onClick={handleSubmitPerson} type="submit">add</button>
-      </div>
-    </form>
-  )
-}
+import PersonsList from './components/PersonsList'
+import Filter from './components/Filter'
+import AddPerson from './components/AddPerson'
 
 const App = () => {
   // STATES
@@ -65,8 +14,6 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-
-  
 
   // FUNCTIONS
 
