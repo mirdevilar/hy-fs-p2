@@ -8,12 +8,18 @@ import AddPerson from './components/AddPerson'
 const App = () => {
   // STATES
 
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' , number: '43-43-2342344'}
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(r => {
+        setPersons(r.data)
+      })
+  }, [])
 
   // FUNCTIONS
 
