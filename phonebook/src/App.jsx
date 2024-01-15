@@ -66,6 +66,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
+  
+
   // FUNCTIONS
 
   const addPerson = () => {
