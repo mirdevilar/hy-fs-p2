@@ -30,7 +30,7 @@ const App = () => {
   const handleNumberUpdate = (e) =>
     setNewNumber(e.target.value)
 
-  const handleAddNote = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault()
 
     const exists = persons.some(person => person.name === newName)
@@ -40,8 +40,8 @@ const App = () => {
         number: newNumber,
       }
 
-      personsService.add(person).then(data => {
-          setPersons(persons.concat(data))
+      personsService.add(person).then(personToAdd => {
+          setPersons(persons.concat(personToAdd))
           setNewName('')
           setNewNumber('')
       })
@@ -56,8 +56,21 @@ const App = () => {
     }*/
   }
 
+  const handleRemove = (e) => {
+    const idToRemove = e.target.id
+    const confirm = window.confirm(`Delete ${persons.find(p => p.id === idToRemove).name}`)
+    personsService.removePerson(idToRemove)
+      .then(() => {
+        const updatedPersons = persons.filter(person =>
+          person.id !== idToRemove
+        )
+        setPersons(updatedPersons)
+      }
+      )
+  }
+
   return (
-    <div>
+    <>
       <h1>Phonebook</h1>
       <Filter 
         handleChange={handleFilterUpdate}
@@ -69,11 +82,15 @@ const App = () => {
         newNumber={newNumber}
         handleNameUpdate={handleNameUpdate}
         handleNumberUpdate={handleNumberUpdate}
-        handleSubmitPerson={handleAddNote}
+        handleSubmitPerson={handleAdd}
       />
       <h2>Numbers</h2>
-      <PersonsList persons={persons} filter={filter} />
-    </div>
+      <PersonsList
+        persons={persons} 
+        filter={filter}
+        handleRemove={handleRemove}
+      />
+    </>
   )
 }
 
