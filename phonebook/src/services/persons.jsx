@@ -7,11 +7,13 @@ const add = (data) =>
   axios.post(baseUrl, data)
     .then(r => r.data)
 
-const removePerson = (data) => {
-  console.log(data);
-  return axios.delete(`${baseUrl}/${data}`)
-    .then(/*r => r.data.id*/)
-}
+const remove = (data) =>
+  axios.delete(`${baseUrl}/${data}`)
 
+const updateNumber = (id, number) =>
+  axios.patch(`${baseUrl}/${id}`, {
+    number
+  })
+    .then(r => r.data.number)
 
-export default { getAll, add, removePerson }
+export default { getAll, add, remove, updateNumber }

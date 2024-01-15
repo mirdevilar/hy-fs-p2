@@ -19,6 +19,13 @@ const App = () => {
       .then(data => setPersons(data))
   }, [])
 
+  // UTILS
+
+  const clearForm = () => {
+    setNewName('')
+    setNewNumber('')
+  }
+
   // HANDLERS
 
   const handleFilterUpdate = (e) =>
@@ -33,33 +40,38 @@ const App = () => {
   const handleAdd = (e) => {
     e.preventDefault()
 
-    const exists = persons.some(person => person.name === newName)
-    if (!exists) {
+    const existing = persons.find(p => p.name === newName)
+    if (!existing) {
       const person = {
         name: newName,
         number: newNumber,
       }
 
-      personsService.add(person).then(personToAdd => {
-          setPersons(persons.concat(personToAdd))
-          setNewName('')
-          setNewNumber('')
-      })
-    } else {
-      alert(`${newName} is already in your phonebook!`)
+      personsService.add(person)
+        .then(personToAdd => {
+            setPersons(persons.concat(personToAdd))
+            clearForm()
+        })
+    } else if (
+      confirm(`${newName} is already in your phonebook! Would you like to update their number?`)
+    ) {
+      personsService.updateNumber(existing.id, newNumber)
+        .then((number) => {
+          const updatedPersons = persons.map(p =>
+            p.id !== existing.id
+              ? p
+              : {...p, number: number}
+          )
+          setPersons(updatedPersons)
+          clearForm()
+        })
     }
-
-    /*if (try) {
-      alert(try)
-    } else {
-
-    }*/
   }
 
   const handleRemove = (e) => {
     const idToRemove = e.target.id
     const confirm = window.confirm(`Delete ${persons.find(p => p.id === idToRemove).name}`)
-    personsService.removePerson(idToRemove)
+    personsService.remove(idToRemove)
       .then(() => {
         const updatedPersons = persons.filter(person =>
           person.id !== idToRemove
