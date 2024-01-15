@@ -68,7 +68,7 @@ const App = () => {
             setPersons(persons.concat(personToAdd))
             showNotification(
               `Added ${personToAdd.name}!`,
-              'successful'
+              'success'
             )
             clearForm()
         })
@@ -85,9 +85,15 @@ const App = () => {
           setPersons(updatedPersons)
           showNotification(
             `Updated ${existing.name}!`,
-            'successful'
+            'success'
           )
           clearForm()
+        })
+        .catch(err => {
+          showNotification(
+            `Information of ${existing.name} has already been removed from the server!`,
+            'error'
+          )
         })
     }
   }
@@ -103,8 +109,13 @@ const App = () => {
             person.id !== idToRemove
           )
           setPersons(updatedPersons)
-        }
-        )
+        })
+        .catch(err => {
+          showNotification(
+            `Information of ${person.name} has already been removed from the server!`,
+            'error'
+          )
+        })
     }
   }
 

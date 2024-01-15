@@ -7,6 +7,10 @@
   margin-bottom: 10px;
 }
 
-.successful {
+.success {
   color: green;
+}
+
+.error {
+  color: red;
 }
