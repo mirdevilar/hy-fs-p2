@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personsService from './services/persons'
 
 import PersonsList from './components/PersonsList'
 import Filter from './components/Filter'
@@ -14,27 +15,9 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(r => {
-        setPersons(r.data)
-      })
+    personsService.getAll()
+      .then(data => setPersons(data))
   }, [])
-
-  // FUNCTIONS
-
-  const addPerson = () => {
-    const exists = persons.some(person => person.name === newName)
-    if (!exists) {
-      const person = {
-        name: newName,
-        number: newNumber,
-      }
-      setPersons(persons.concat(person))
-    } else {
-      throw newName + ' is already in your phonebook!'
-    }
-  }
 
   // HANDLERS
 
@@ -50,13 +33,20 @@ const App = () => {
   const handleAddNote = (e) => {
     e.preventDefault()
 
-    try {
-      addPerson()
-      setNewName('')
-      setNewNumber('')
-    } catch (error) {
-      console.log(error)
-      alert(error)
+    const exists = persons.some(person => person.name === newName)
+    if (!exists) {
+      const person = {
+        name: newName,
+        number: newNumber,
+      }
+
+      personsService.add(person).then(data => {
+          setPersons(persons.concat(data))
+          setNewName('')
+          setNewNumber('')
+      })
+    } else {
+      alert(`${newName} is already in your phonebook!`)
     }
 
     /*if (try) {
