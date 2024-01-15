@@ -71,14 +71,16 @@ const App = () => {
   const handleRemove = (e) => {
     const idToRemove = e.target.id
     const confirm = window.confirm(`Delete ${persons.find(p => p.id === idToRemove).name}`)
-    personsService.remove(idToRemove)
-      .then(() => {
-        const updatedPersons = persons.filter(person =>
-          person.id !== idToRemove
+    if (confirm) {
+      personsService.remove(idToRemove)
+        .then(() => {
+          const updatedPersons = persons.filter(person =>
+            person.id !== idToRemove
+          )
+          setPersons(updatedPersons)
+        }
         )
-        setPersons(updatedPersons)
-      }
-      )
+    }
   }
 
   return (
