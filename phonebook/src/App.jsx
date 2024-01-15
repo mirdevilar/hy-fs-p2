@@ -24,20 +24,15 @@ const App = () => {
   // FUNCTIONS
 
   const addPerson = () => {
-    const exists = (persons.reduce((includes, person) => {
-      return person.name === newName
-        ? true
-        : includes
-    }, false))
-    console.log(JSON.stringify(persons));
-    if (exists) {
-      throw newName + ' is already in your phonebook!'
-    } else {
+    const exists = persons.some(person => person.name === newName)
+    if (!exists) {
       const person = {
         name: newName,
         number: newNumber,
       }
       setPersons(persons.concat(person))
+    } else {
+      throw newName + ' is already in your phonebook!'
     }
   }
 
@@ -52,7 +47,7 @@ const App = () => {
   const handleNumberUpdate = (e) =>
     setNewNumber(e.target.value)
 
-  const handleSubmitPerson = (e) => {
+  const handleAddNote = (e) => {
     e.preventDefault()
 
     try {
@@ -84,7 +79,7 @@ const App = () => {
         newNumber={newNumber}
         handleNameUpdate={handleNameUpdate}
         handleNumberUpdate={handleNumberUpdate}
-        handleSubmitPerson={handleSubmitPerson}
+        handleSubmitPerson={handleAddNote}
       />
       <h2>Numbers</h2>
       <PersonsList persons={persons} filter={filter} />
