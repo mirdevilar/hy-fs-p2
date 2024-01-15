@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+
 import personsService from './services/persons'
 
 import PersonsList from './components/PersonsList'
 import Filter from './components/Filter'
 import AddPerson from './components/AddPerson'
+import Notification from './components/Notification'
 
 const App = () => {
   // STATES
@@ -13,6 +14,9 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState({msg: '', type: 'successful'})
+
+  // EFFECTS
 
   useEffect(() => {
     personsService.getAll()
@@ -24,6 +28,18 @@ const App = () => {
   const clearForm = () => {
     setNewName('')
     setNewNumber('')
+  }
+
+  const resetNotification = () => {
+    setNotification({
+      msg: '',
+      type: ''
+    })
+  }
+
+  const showNotification = (msg, type) => {
+    setNotification({ msg, type })
+    setTimeout(resetNotification, 2000)
   }
 
   // HANDLERS
@@ -50,6 +66,10 @@ const App = () => {
       personsService.add(person)
         .then(personToAdd => {
             setPersons(persons.concat(personToAdd))
+            showNotification(
+              `Added ${personToAdd.name}!`,
+              'successful'
+            )
             clearForm()
         })
     } else if (
@@ -63,6 +83,10 @@ const App = () => {
               : {...p, number: number}
           )
           setPersons(updatedPersons)
+          showNotification(
+            `Updated ${existing.name}!`,
+            'successful'
+          )
           clearForm()
         })
     }
@@ -70,7 +94,8 @@ const App = () => {
 
   const handleRemove = (e) => {
     const idToRemove = e.target.id
-    const confirm = window.confirm(`Delete ${persons.find(p => p.id === idToRemove).name}`)
+    const person = persons.find(p => p.id === idToRemove).name
+    const confirm = window.confirm(`Delete ${person}?`)
     if (confirm) {
       personsService.remove(idToRemove)
         .then(() => {
@@ -86,6 +111,7 @@ const App = () => {
   return (
     <>
       <h1>Phonebook</h1>
+      <Notification n={notification} />
       <Filter 
         handleChange={handleFilterUpdate}
         filter={filter}
