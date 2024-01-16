@@ -3,11 +3,17 @@ import axios from 'axios'
 
 const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api/'
 
-const List = ({countries}) =>
+const List = ({countries, handleShowCountry}) =>
   <ul>
     {
       countries.map((c, i) =>
-        <li key={i}>{c.name.common}</li>
+        <li key={i}>
+          {c.name.common}
+          <button 
+            onClick={handleShowCountry}
+            id={c.name.common}
+          >show</button>
+        </li>
       )
     }
   </ul>
@@ -18,12 +24,12 @@ const Country = ({c}) => {
     <div>
       <h2>{c.name.common}</h2>
       <p>capital {c.capital[0]}</p>
-      <p>area {c.area}</p>
+      <p>population {c.population}</p>
       <h3>Languages</h3>
       <ul>
         {
           arr.map(l =>
-            <li>{l[1]}</li>  
+            <li>{l[1]}</li>
           )
         }
       </ul>
@@ -32,13 +38,13 @@ const Country = ({c}) => {
   )
 }
 
-const Result = ({countries}) => {
+const Result = ({countries, handleShowCountry}) => {
   console.log('rendering result');
   if (countries.length > 10)
     //console.log('poop')
     return <p>Too many matches, keep typing</p>
   else if (countries.length > 1)
-    return <List countries={countries} />
+    return <List countries={countries} handleShowCountry={handleShowCountry} />
   else if (countries.length == 1)
     return <Country c={countries[0]} />
 }
@@ -69,6 +75,11 @@ function App() {
     setQuery(e.target.value)
   }
 
+  const handleShowCountry = (e) => {
+    console.log(e.target.country)
+    setQuery(e.target.id)
+  }
+
   return (
     <>
       find countries
@@ -76,7 +87,7 @@ function App() {
         onChange={handleQueryChange}
         value={query}
       ></input>
-      <Result countries={filteredCountries} />
+      <Result countries={filteredCountries} handleShowCountry={handleShowCountry} />
     </>
   )
 }
