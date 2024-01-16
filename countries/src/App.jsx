@@ -71,12 +71,11 @@ function App() {
       })
   }, [query])
 
-  const handleQueryChange = (e) => {
+  const handleQueryChange = (e) => { 
     setQuery(e.target.value)
   }
 
   const handleShowCountry = (e) => {
-    console.log(e.target.country)
     setQuery(e.target.id)
   }
 
