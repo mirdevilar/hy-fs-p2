@@ -19,7 +19,7 @@ const List = ({countries, handleShowCountry}) =>
   </ul>
 
 const Country = ({c}) => {
-  const arr = Object.entries(c.languages)
+  const languages = Object.values(c.languages)
   return (
     <div>
       <h2>{c.name.common}</h2>
@@ -28,8 +28,8 @@ const Country = ({c}) => {
       <h3>Languages</h3>
       <ul>
         {
-          arr.map(l =>
-            <li>{l[1]}</li>
+          languages.map(l =>
+            <li key={l}>{l}</li>
           )
         }
       </ul>
@@ -39,37 +39,32 @@ const Country = ({c}) => {
 }
 
 const Result = ({countries, handleShowCountry}) => {
-  console.log('rendering result');
   if (countries.length > 10)
-    //console.log('poop')
     return <p>Too many matches, keep typing</p>
   else if (countries.length > 1)
     return <List countries={countries} handleShowCountry={handleShowCountry} />
-  else if (countries.length == 1)
+  else if (countries.length === 1)
     return <Country c={countries[0]} />
 }
 
-function App() {
+const App = () => {
   const [query, setQuery] = useState('')
-  const [filteredCountries, setFilteredCountries] = useState([])
+  const [countries, setCountries] = useState([])
 
   useEffect(() => {
-    console.log('effect')
     axios.get(`${baseUrl}/all`)
-      .then( r => r.data )
-      .then( countries =>
-        countries.filter(c => {
-          const commonName = c.name.common.toLowerCase()
-          const officialName = c.name.official.toLowerCase()
-          const lowerQuery = query.toLowerCase()
-
-          return commonName.includes(lowerQuery) || officialName.includes(lowerQuery)
-        })
-      )
-      .then( countries => {
-        setFilteredCountries(countries)
+      .then( ({data}) => {
+        setCountries(data)
       })
-  }, [query])
+  }, [])
+
+  const filteredCountries = countries.filter(c => {
+    const commonName = c.name.common.toLowerCase()
+    const officialName = c.name.official.toLowerCase()
+    const lowerQuery = query.toLowerCase()
+
+    return commonName.includes(lowerQuery) || officialName.includes(lowerQuery)
+  })
 
   const handleQueryChange = (e) => { 
     setQuery(e.target.value)
