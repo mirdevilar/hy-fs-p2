@@ -75,7 +75,7 @@ const App = () => {
     } else if (
       confirm(`${newName} is already in your phonebook! Would you like to update their number?`)
     ) {
-      personsService.updateNumber(existing.id, newNumber)
+      personsService.update(existing.id, newNumber)
         .then((number) => {
           const updatedPersons = persons.map(p =>
             p.id !== existing.id

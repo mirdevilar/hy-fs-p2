@@ -1,26 +1,22 @@
-const AddPerson = ({newName, newNumber,
-  handleNameUpdate, handleNumberUpdate, handleSubmitPerson}) => {
-    
-  return (
+const AddPerson = ({newName, newNumber, handleNameUpdate, handleNumberUpdate, handleSubmitPerson}) =>
   <form>
     <div>
-    name: 
-    <input 
-      onChange={handleNameUpdate}
-      value={newName}
-    />
-    <br />
-    number:
-    <input
-      onChange={handleNumberUpdate}
-      value={newNumber}
-    />
+      name: 
+      <input 
+        onChange={handleNameUpdate}
+        value={newName}
+      />
     </div>
     <div>
-    <button onClick={handleSubmitPerson} type="submit">add</button>
+      number:
+      <input
+        onChange={handleNumberUpdate}
+        value={newNumber}
+      />
+    </div>
+    <div>
+      <button onClick={handleSubmitPerson} type="submit">add</button>
     </div>
   </form>
-  )
-}
 
 export default AddPerson

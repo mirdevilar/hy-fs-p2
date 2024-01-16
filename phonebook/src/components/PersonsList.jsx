@@ -8,23 +8,21 @@ const Person = ({person, handleRemove}) => {
 }
 
 const PersonsList = ({persons, filter, handleRemove}) => {
-  const list = persons
-    .filter(person => {
-      return (
-        !filter ||
-        person.name.toLowerCase()
-          .includes(filter.toLowerCase())
-      )
-    })
-    .map((person, i) =>
+  const list = filter
+    ? persons.filter(person =>
+      person.name.toLowerCase()
+        .includes(filter.toLowerCase())
+    )
+    : persons
+  
+  return (
+    <ul>{list.map((person, i) =>
       <Person
         key={i}
         person={person}
         handleRemove={handleRemove}
       />
-    )
-  return (
-    <ul>{list}</ul>
+    )}</ul>
   )
 }
 

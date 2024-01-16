@@ -3,17 +3,17 @@ const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => axios.get(baseUrl).then(r => r.data)
 
-const add = (data) =>
+const add = data =>
   axios.post(baseUrl, data)
     .then(r => r.data)
 
-const remove = (data) =>
-  axios.delete(`${baseUrl}/${data}`)
+const remove = id =>
+  axios.delete(`${baseUrl}/${id}`)
 
-const updateNumber = (id, number) =>
+const update = (id, number) =>
   axios.patch(`${baseUrl}/${id}`, {
     number
   })
     .then(r => r.data.number)
 
-export default { getAll, add, remove, updateNumber }
+export default { getAll, add, remove, update }
